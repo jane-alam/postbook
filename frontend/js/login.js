@@ -1,4 +1,4 @@
-const handleLogin = () => {
+const handleLogin = async () => {
   const userIdInput = document.getElementById('user-id');
   const userPasswordInput = document.getElementById('password');
 
@@ -9,7 +9,23 @@ const handleLogin = () => {
     userId: userId,
     password: password,
   };
-  fetchUserInfo(user);
+  const userInfo = await fetchUserInfo(user);
+
+  const errorElement = document.getElementById("user-login-error");
+
+  // User data Condition
+  if (userInfo.length == 0) {
+    errorElement.classList.remove("hidden");
+  }
+  else {
+    errorElement.classList.add("hidden");
+
+    // Save User Information
+    localStorage.setItem("loggedInUser", JSON.stringify(userInfo[0]));
+    window.location.href = "/post.html";
+  }
+
+
 };
 
 
@@ -29,6 +45,6 @@ const fetchUserInfo = async (user) => {
     console.log("Error connecting to the server:", err);
   }
   finally {
-    console.log("User info from server: ", data)
+    return data;
   }
 }
