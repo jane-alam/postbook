@@ -6,10 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Post Book</title>
   <link rel="stylesheet" href="./style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
   <h1>Welcome to Postbook</h1>
+  <div class="login-form">
+    <h3>Login</h3>
+    <form>
+      <input type="text" name="user-id" id="user-id" placeholder="User ID">
+      <input type="password" name="password" id="password" placeholder="Password">
+    </form>
+    <button onclick="handleLogin()" class="login-btn">Login</button>
+  </div>
+  <script src="./js/login.js"></script>
 </body>
 
 </html>
