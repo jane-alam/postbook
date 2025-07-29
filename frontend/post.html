@@ -14,8 +14,10 @@
 
 <body>
   <h1> Post List</h1>
-  <h2>Hello, username</h2>
-  <button>Logout</button>
+  <div class="header">
+    <h2>Hello, <span id="logged-username">username</span></h2>
+    <button onclick="logOut()" class="loggedout-btn">Logout</button>
+  </div>
   <section id="post-container">
     <div class="post">
       <div class="post-header">
