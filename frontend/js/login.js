@@ -1,3 +1,4 @@
+// Login Js
 const handleLogin = async () => {
   const userIdInput = document.getElementById('user-id');
   const userPasswordInput = document.getElementById('password');
@@ -32,7 +33,7 @@ const handleLogin = async () => {
 const fetchUserInfo = async (user) => {
   let data;
   try {
-    const res = await fetch('http://localhost:5000/getUserInfo', {
+    const res = await fetch("http://localhost:5000/getUserInfo", {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -48,3 +49,4 @@ const fetchUserInfo = async (user) => {
     return data;
   }
 }
+

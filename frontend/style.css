@@ -16,8 +16,20 @@
   width: 90%;
   background-color: rgb(244, 222, 225);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
 }
 
+.post {
+  width: 60%;
+  padding: 15px;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin: 20px;
+}
 
 .post-header {
   display: flex;
@@ -29,12 +41,10 @@
 .post-user-image img {
   width: 50px;
   height: 50px;
+  border-radius: 100%;
 }
 
-.post-username-time {
-  border: 2px solid olivedrab;
 
-}
 
 .post-username {
   margin: 0;
@@ -54,4 +64,57 @@
   width: 50%;
   border-radius: 8px;
   margin: 15px;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.comment-user-image img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.comment-text-container {
+  background-color: rgb(152, 211, 152);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.comment-text-container h4,
+p {
+  margin: 0;
+}
+
+.comment-text-container h4 {
+  margin-bottom: 5px;
+}
+
+.postComment-holder {
+  display: flex;
+  gap: 10px;
+  margin: 15px;
+}
+
+.post-comment-input-field-holder {
+  width: 60%;
+}
+
+.postComment-input-field {
+  padding: 10px;
+  outline: none;
+  border: 1px solid gray;
+  width: 80%;
+}
+
+.postComment-btn {
+  padding: 10px;
+  background-color: rgb(202, 60, 60);
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
