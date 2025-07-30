@@ -18,6 +18,24 @@
     <h2>Hello, <span id="logged-username">username</span></h2>
     <button onclick="logOut()" class="loggedout-btn">Logout</button>
   </div>
+
+  <section id="add-post-container">
+    <article>
+      <h2>Add New Post</h2>
+      <div>
+        <textarea name="" id="newPost-text" cols="50" rows="5" placeholder="Add post text"></textarea>
+      </div>
+
+      <div>
+        <input type="text" id="newPost-image" placeholder="Add post Image URL" />
+      </div>
+
+      <div>
+        <button onclick="handleAddNewPost()" class="addPost-btn">POST</button>
+      </div>
+    </article>
+  </section>
+
   <section id="post-container">
     <div class="post">
       <div class="post-header">
@@ -246,6 +264,7 @@
     </div>
   </section>
 
+  <script src="./js/utils/localtime.js"></script>
   <script src="./js/fetch.js"></script>
 </body>
 

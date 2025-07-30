@@ -92,6 +92,21 @@ app.post("/postComment", (req, res) => {
 
 });
 
+app.post('/addNewPost', (req, res) => {
+  const { postedUserId, postedTime, postText, postImageUrl } = req.body;
+  let sqlForAddingNewPost = `INSERT INTO posts (postId, postedUserId, postedTime, postText, postImageUrl) VALUES (NULL, ?, ?, ?, ?)`;
+
+  let query = connection.query(sqlForAddingNewPost, [postedUserId, postedTime, postText, postImageUrl], (err, result) => {
+    if (err) {
+      console.log("Adding post error", err);
+    }
+    else {
+      res.send(result);
+    }
+  });
+
+});
+
 
 
 app.listen(port, () => {

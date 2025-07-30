@@ -58,8 +58,8 @@ const showAllPosts = (allPosts) => {
         <div class="post-username-time">
           <p class="post-username">${post.postedUserName}</p>
           <div class="posted-time">
-            <span>${post.postedTime}</span>
-            <span>hours ago</span>
+            <span>${timeDifference(`${post.postedTime}`)}</span>
+            <span> ago</span>
           </div>
         </div>
       </div>
@@ -171,5 +171,54 @@ const fetchAllCommentsOfAPost = async (postId) => {
   }
 
 };
+
+const handleAddNewPost = async () => {
+  //Getting user ID from Localstorage 
+  let user = localStorage.getItem('loggedInUser');
+  if (user) {
+    user = JSON.parse(user);
+  }
+
+  const postedUserId = user.userId;
+
+  // Current time of the Post
+  let now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  let timeOfPost = now.toISOString();
+
+  const postTextElement = document.getElementById('newPost-text');
+  const postText = postTextElement.value;
+
+  const postImageElement = document.getElementById('newPost-image');
+  const postImageUrl = postImageElement.value;
+
+  // Create Post Object
+  const postObject = {
+    postedUserId: postedUserId,
+    postedTime: timeOfPost,
+    postText: postText,
+    postImageUrl: postImageUrl,
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/addNewPost', {
+      method: 'POST',
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(postObject),
+    });
+    const data = await res.json();
+  }
+  catch (err) {
+    console.log("While send data ", err);
+  }
+  finally {
+    location.reload();
+  }
+
+}
+
+
 fetchAllPosts();
 showLoggedUsername();
