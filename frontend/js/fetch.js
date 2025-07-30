@@ -46,14 +46,32 @@ const showAllPosts = (allPosts) => {
   const postContainer = document.getElementById('post-container');
   postContainer.innerHTML = "";
 
+  // Get logged-in user info
+  let user = localStorage.getItem('loggedInUser');
+  if (user) {
+    user = JSON.parse(user);
+  }
+
   allPosts.forEach(async (post) => {
     const postDiv = document.createElement('div');
     postDiv.classList.add('post');
+
+    // Add edit/delete buttons only for the user's own posts
+    let actionButtons = '';
+    if (user && user.userName === post.postedUserName) {
+      actionButtons = `
+        <div class="post-actions">
+          <button class="edit-post-btn" data-post-id="${post.postId}">Edit</button>
+          <button class="delete-post-btn" data-post-id="${post.postId}">Delete</button>
+        </div>
+      `;
+    }
+
     postDiv.innerHTML = `
       <div class="post-header">
+      <div>
         <div class="post-user-image">
-          <img
-            src=${post.postedUserImage} />
+          <img src=${post.postedUserImage} />
         </div>
         <div class="post-username-time">
           <p class="post-username">${post.postedUserName}</p>
@@ -62,12 +80,15 @@ const showAllPosts = (allPosts) => {
             <span> ago</span>
           </div>
         </div>
+        </div>
+        ${actionButtons}  
       </div>
+
       <div class="post-text">${post.postText}</div>
       <div class="post-image">
-        <img
-          src=${post.postImageUrl} alt="post-image" />
+        <img src=${post.postImageUrl} alt="post-image" />
       </div>
+      
     `;
     postContainer.appendChild(postDiv);
 
@@ -109,8 +130,39 @@ const showAllPosts = (allPosts) => {
 
     postDiv.appendChild(addNewCommentDiv);
 
-  });
 
+    // Add event listeners for edit and delete buttons
+    if (user && user.userName === post.postedUserName) {
+      const editBtn = postDiv.querySelector('.edit-post-btn');
+      const deleteBtn = postDiv.querySelector('.delete-post-btn');
+
+      if (editBtn) {
+        editBtn.addEventListener('click', async () => {
+          const newText = prompt("Edit post text:", post.postText);
+          const newImageUrl = prompt("Edit image URL:", post.postImageUrl);
+          if (newText !== null && newImageUrl !== null) {
+            await fetch(`http://localhost:5000/editPost/${post.postId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ postText: newText, postImageUrl: newImageUrl })
+            });
+            location.reload();
+          }
+        });
+      }
+
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', async () => {
+          if (confirm("Are you sure you want to delete this post?")) {
+            await fetch(`http://localhost:5000/deletePost/${post.postId}`, {
+              method: 'DELETE'
+            });
+            location.reload();
+          }
+        });
+      }
+    }
+  });
 };
 
 const handlePostComment = async (postId) => {
@@ -219,6 +271,34 @@ const handleAddNewPost = async () => {
 
 }
 
+// Add event listeners after posts are loaded
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('delete-btn')) {
+    const postId = e.target.closest('.post').dataset.postId;
+    fetch(`http://localhost:5000/deletePost/${postId}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(() => location.reload());
+  }
+
+  if (e.target.classList.contains('edit-btn')) {
+    const postDiv = e.target.closest('.post');
+    const postId = postDiv.dataset.postId;
+    const newText = prompt("Edit post text:", postDiv.querySelector('p').innerText);
+    const newImageUrl = prompt("Edit image URL:", postDiv.querySelector('img').src);
+    fetch(`http://localhost:5000/editPost/${postId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ postText: newText, postImageUrl: newImageUrl })
+    })
+      .then(res => res.json())
+      .then(() => location.reload());
+  }
+});
+
 
 fetchAllPosts();
 showLoggedUsername();
+
+

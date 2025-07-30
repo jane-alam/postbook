@@ -107,7 +107,34 @@ app.post('/addNewPost', (req, res) => {
 
 });
 
+// Edit Post
+app.put('/editPost/:postId', (req, res) => {
+  const { postText, postImageUrl } = req.body;
+  const { postId } = req.params;
+  const sql = `UPDATE posts SET postText = ?, postImageUrl = ? WHERE postId = ?`;
+  connection.query(sql, [postText, postImageUrl, postId], (err, result) => {
+    if (err) {
+      console.log("Edit post error", err);
+      res.status(500).send({ error: "Edit failed" });
+    } else {
+      res.send(result);
+    }
+  });
+});
 
+// Delete Post
+app.delete('/deletePost/:postId', (req, res) => {
+  const { postId } = req.params;
+  const sql = `DELETE FROM posts WHERE postId = ?`;
+  connection.query(sql, [postId], (err, result) => {
+    if (err) {
+      console.log("Delete post error", err);
+      res.status(500).send({ error: "Delete failed" });
+    } else {
+      res.send(result);
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is runnig on ${port}`);
