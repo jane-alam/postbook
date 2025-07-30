@@ -69,7 +69,7 @@ const showAllPosts = (allPosts) => {
 
     postDiv.innerHTML = `
       <div class="post-header">
-      <div>
+      <div class="post-user-info">
         <div class="post-user-image">
           <img src=${post.postedUserImage} />
         </div>
