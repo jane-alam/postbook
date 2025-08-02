@@ -272,14 +272,18 @@ const handleAddNewPost = async () => {
 }
 
 // Add event listeners after posts are loaded
-document.addEventListener('click', function (e) {
+document.addEventListener('click', async function (e) {
   if (e.target.classList.contains('delete-btn')) {
     const postId = e.target.closest('.post').dataset.postId;
-    fetch(`http://localhost:5000/deletePost/${postId}`, {
-      method: 'DELETE'
-    })
-      .then(res => res.json())
-      .then(() => location.reload());
+    try {
+      const res = await fetch(`http://localhost:5000/deletePost/${postId}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      location.reload();
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
   }
 
   if (e.target.classList.contains('edit-btn')) {
@@ -287,15 +291,21 @@ document.addEventListener('click', function (e) {
     const postId = postDiv.dataset.postId;
     const newText = prompt("Edit post text:", postDiv.querySelector('p').innerText);
     const newImageUrl = prompt("Edit image URL:", postDiv.querySelector('img').src);
-    fetch(`http://localhost:5000/editPost/${postId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ postText: newText, postImageUrl: newImageUrl })
-    })
-      .then(res => res.json())
-      .then(() => location.reload());
+
+    try {
+      const res = await fetch(`http://localhost:5000/editPost/${postId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postText: newText, postImageUrl: newImageUrl })
+      });
+      const data = await res.json();
+      location.reload();
+    } catch (error) {
+      console.error('Edit failed:', error);
+    }
   }
 });
+
 
 
 fetchAllPosts();
